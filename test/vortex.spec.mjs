@@ -2,6 +2,37 @@ import { test, expect } from "@playwright/test";
 import * as app from "../target/js/app/app.main.mjs";
 import { to_js_data } from "../target/js/app/calcit.core.mjs";
 
+test("默认播放：过期 RAF 首帧不能产生负时间或停止绘制", async ({ page }) => {
+  const errors = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.addInitScript(() => {
+    const original = window.requestAnimationFrame.bind(window);
+    let firstFrame = true;
+    window.requestAnimationFrame = (callback) =>
+      original((timestamp) => {
+        if (firstFrame) {
+          firstFrame = false;
+          callback(timestamp - 10000);
+        } else callback(timestamp);
+      });
+  });
+  await page.goto("/?seed=17");
+  await expect
+    .poll(() => page.evaluate(() => window.vortex?.snapshot().time ?? -1))
+    .toBeGreaterThan(0);
+  expect(
+    await page.evaluate(() => {
+      const canvas = document.querySelector("canvas");
+      const data = canvas
+        .getContext("2d")
+        .getImageData(0, 0, canvas.width, canvas.height).data;
+      return data.some((value, index) => index % 4 !== 3 && value > 10);
+    }),
+  ).toBe(true);
+  await page.getByRole("button", { name: "暂停", exact: true }).click();
+  expect(errors).toEqual([]);
+});
+
 test("Calcit：完整圈数、生成规则、乱序采样与历史角速度", () => {
   const model = app.initial(17);
   const data = to_js_data(model);

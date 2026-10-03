@@ -47,7 +47,8 @@ function render() {
 
 function tick(now) {
   if (closed) return;
-  if (playing && !document.hidden) time += Math.min((now - last) / 1000, 0.1);
+  if (playing && !document.hidden)
+    time += Math.max(0, Math.min((now - last) / 1000, 0.1));
   last = now;
   if (playing) render();
   frame = requestAnimationFrame(tick);
