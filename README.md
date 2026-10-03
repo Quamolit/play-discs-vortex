@@ -20,7 +20,7 @@ yarn format:check
 
 `calcit.cirru` 是源码，通过 Calcit CLI 修改。随机生成、HSL 转换、绝对时间采样、Scene 与 DPR 投影、Quamolit 绘制调用都由类型化 Calcit 实现；`main.mjs` 只负责浏览器生命周期、RAF、DOM 浮层和输入接线。编译输出放被忽略的 `target/js/app`，不需要手工拷贝或引入 Quamolit 内部 JS。
 
-固定 Quamolit `0.0.18-alpha.2`（对应已验证的 `9e0cbb4`），传递依赖 js-ffi `0.2.1-alpha.11`；不是稳定版承诺。当前使用 Canvas2D，未验证 WebGPU。
+固定 Quamolit `0.0.18-alpha.3`（对应已验证的 `b419897`），传递依赖 js-ffi `0.2.1-alpha.11`；不是稳定版承诺。当前使用 Canvas2D，未验证 WebGPU。
 
 当前 Scene 没有直接圆弧描述，暂以最大角步长 0.04 rad 的圆头折线表示，最大半径的弦误差 <0.094 CSS px；由 [Quamolit #212](https://github.com/Quamolit/quamolit/issues/212) 跟踪。不是旧随机画面的逐像素复制：随机源改为固定 seed，但原有生成分布、色彩范围与动画规则保留。
 
@@ -28,7 +28,7 @@ yarn format:check
 
 ### English
 
-A restored full-screen Calcit/Quamolit animation, not a compile-only bootstrap. Typed Calcit owns seeded generation and absolute-time Scene sampling; JavaScript only wires browser lifecycle and controls. Run `yarn compile && yarn dev`; use `?seed=17&t=0.5` for deterministic frames. `yarn test` validates the production build against independent native Canvas arcs at DPR 1/2. Quamolit `0.0.18-alpha.2` is pinned; WebGPU is not verified.
+A restored full-screen Calcit/Quamolit animation, not a compile-only bootstrap. Typed Calcit owns seeded generation and absolute-time Scene sampling; JavaScript only wires browser lifecycle and controls. Run `yarn compile && yarn dev`; use `?seed=17&t=0.5` for deterministic frames. `yarn test` validates the production build against independent native Canvas arcs at DPR 1/2. Quamolit `0.0.18-alpha.3` is pinned; WebGPU is not verified.
 
 ### Workflow
 
