@@ -1,14 +1,18 @@
 {
   "dependencies": {
-    "@calcit/procs": "0.22.0-alpha.3"
+    "@calcit/procs": "0.28.0"
   },
   "devDependencies": {
-    "bottom-tip": "^0.1.5",
+    "@playwright/test": "1.63.0",
+    "prettier": "3.8.1",
     "vite": "^8.0.12"
   },
   "scripts": {
-    "compile": "caps --ci && calcit calcit.cirru js",
-    "release": "yarn vite build --base=./"
+    "compile": "caps --ci && calcit analyze check-types --ns app.main --summary-only && calcit --check-only --init-fn app.main/draw! && calcit --emit-path target/js/app js",
+    "release": "yarn vite build --base=./",
+    "test": "yarn compile && yarn release && playwright test",
+    "format:check": "prettier --check main.mjs playwright.config.mjs test/*.mjs",
+    "dev": "vite --host 127.0.0.1"
   },
   "version": "0.0.2",
   "packageManager": "yarn@4.12.0"
