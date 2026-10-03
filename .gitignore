@@ -8,5 +8,8 @@
 js-out/
 node_modules/
 dist/
+target/
+test-results/
+playwright-report/
 .pnp.cjs
 .pnp.loader.mjs

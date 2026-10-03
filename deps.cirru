@@ -1,6 +1,4 @@
 
-{} (:calcit-version |0.22.0-alpha.3)
+{} (:calcit-version |0.28.0)
   :version |0.0.2
-  :dependencies $ {} (|Quamolit/quamolit |0.0.18-alpha.1)
-    |calcit-lang/js-ffi |0.1.35
-    |mvc-works/pointed-prompt |0.0.11
+  :dependencies $ {} (|Quamolit/quamolit |9e0cbb4da8770667ed9fe79e83a3f7c98303085e)
