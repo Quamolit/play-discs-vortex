@@ -67,23 +67,17 @@ test("Calcit：完整圈数、生成规则、乱序采样与历史角速度", ()
       const path = node.content[1];
       const angle =
         ((360 * segment.from + (400 * time) / segment.ring) * Math.PI) / 180;
-      expect(path.points[0].x).toBeCloseTo(
-        550 + 12 * segment.ring * Math.cos(angle),
-        10,
-      );
-      expect(path.points[0].y).toBeCloseTo(
-        500 + 12 * segment.ring * Math.sin(angle),
-        10,
-      );
+      expect(node.content[0]).toBe("arc");
+      expect(path.cx).toBe(550);
+      expect(path.cy).toBe(500);
+      expect(path.radius).toBe(12 * segment.ring);
+      expect(path["start-angle"]).toBe(angle);
+      expect(path.counterclockwise).toBe(false);
       expect(path.width).toBe(4);
       expect(path.stroke).toEqual(segment.color);
       const endAngle =
         ((360 * segment.to + (400 * time) / segment.ring) * Math.PI) / 180;
-      expect(path.points.at(-1).x).toBeCloseTo(
-        550 + 12 * segment.ring * Math.cos(endAngle),
-        10,
-      );
-      expect(12 * segment.ring * (1 - Math.cos(0.04 / 2))).toBeLessThan(0.1);
+      expect(path["end-angle"]).toBe(endAngle);
     });
   }
   expect(JSON.stringify(to_js_data(model))).toBe(before);
@@ -170,8 +164,8 @@ for (const dpr of [1, 2]) {
         };
       }, time);
       expect(metrics.lit).toBeGreaterThan(10000 * dpr * dpr);
-      // Native arc 与折线仅有抗锯齿/细分差异，误差按实际着色面积而非全屏稀释。
-      expect(metrics.errorPerLitChannel).toBeLessThan(4);
+      // 原生 Scene arc 已移除离散误差；保留完整帧比较，收紧而不是放宽旧门禁。
+      expect(metrics.errorPerLitChannel).toBe(0);
       expect(metrics.blankError).toBeGreaterThan(4);
       console.log(JSON.stringify({ dpr, time, ...metrics }));
       expect(metrics.width).toBe(1100 * dpr);
