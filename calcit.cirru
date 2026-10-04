@@ -165,28 +165,24 @@
         'segment-node $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn segment-node (segment index seconds width height)
             let
-                radius $ * 12 $ :ring segment
                 rotation $ / (* seconds 400) (:ring segment)
-                start $ * (/ &PI 180)
-                  +
-                    * 360 $ :from segment
-                    , rotation
-                span $ * (* 2 &PI)
-                  - (:to segment) (:from segment)
-                steps $ if (> span 0)
-                  ceil $ / span 0.04
-                  , 1
-                points $ map
-                  range 0 $ inc steps
-                  fn (step)
-                    let
-                        angle $ + start $ * span (/ step steps)
-                      motion/Vec2 :x
-                        + (/ width 2)
-                          * radius $ cos angle
-                        , :y $ + (/ height 2)
-                          * radius $ sin angle
-              scene/SceneNode :id (str |arc- index) :key (str |arc- index) :parent | :bindings ([]) :interaction (scene/SceneInteraction :none) :content $ scene/SceneContent :polyline $ scene/PolylineNode :points points :width 4 :stroke (:color segment)
+                start $ /
+                  *
+                    +
+                      * 360 $ :from segment
+                      , rotation
+                    , &PI
+                  , 180
+                end $ /
+                  *
+                    +
+                      * 360 $ :to segment
+                      , rotation
+                    , &PI
+                  , 180
+              scene/SceneNode :id (str |arc- index) :key (str |arc- index) :parent | :bindings ([]) :interaction (scene/SceneInteraction :none) :content $ scene/SceneContent :arc $ scene/ArcNode :cx (/ width 2) :cy (/ height 2) :radius
+                * 12 $ :ring segment
+                , :start-angle start :end-angle end :counterclockwise false :width 4 :stroke (:color segment)
           :examples $ []
           :schema $ :: 'Fn $ {} (:return 'quamolit.scene-ir/SceneNode)
             :args $ [] 'app.main/Segment 'Number 'Number 'Number 'Number
