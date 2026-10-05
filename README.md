@@ -26,6 +26,17 @@ yarn format:check
 
 测试集中一条链路：Calcit 完整圈数/起止弧度/角速度/不可变乱序采样，构建产物在 Chromium 中与独立原生 `Canvas.arc` 对比 `t=0/0.5/2.5`、DPR1/2；再验证生成、播放/暂停、全屏、窄屏 resize、卸载和 runtime 错误。原折线容差已收紧为整帧 RGB 零差异，不用全屏空白稀释；截图只存到忽略的 `test-results` 与 Actions artifact。
 
+### 前端部署
+
+COS 只上传 `dist/`，使用正式 `cos-upload-action@v1.2.0` 的内置
+`public-base-url` 逐文件校验，不增加上传验证脚本。PR CDN 前缀为
+`Quamolit/play-discs-vortex/pr/<PR编号>/<run>/<attempt>/`，原
+`https://repo.tiye.me/Quamolit/play-discs-vortex/pr/<PR编号>/` 预览入口不变。
+原生产构建先完成浏览器回归，再从同一源码构建 CDN 资源，校验成功后才上传 HTML。
+仅同仓库 PR 和原手动部署事件上传；fork PR 只测试 / 构建，main push 不部署。
+生产 COS 前缀 `Quamolit/play-discs-vortex/`、web-assets 路径与手动部署条件不变，
+队列不取消执行中的上传。需要仓库或组织提供 `COS_BUCKET`、`COS_SECRET_ID`、`COS_SECRET_KEY`。
+
 ### English
 
 A restored full-screen Calcit/Quamolit animation, not a compile-only bootstrap. Typed Calcit owns seeded generation and absolute-time Scene sampling; JavaScript only wires browser lifecycle and controls. Native `ArcNode` replaces application-side polyline tessellation. Run `yarn compile && yarn dev`; use `?seed=17&t=0.5` for deterministic frames. `yarn test` requires zero full-frame RGB differences against independent native Canvas arcs at DPR 1/2. Quamolit `0.0.18-alpha.4` is pinned and includes merged #218; no candidate SHA or manual host imports are needed. Alpha.3 does not include native arcs; WebGPU is not verified.
