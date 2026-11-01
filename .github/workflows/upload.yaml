@@ -20,8 +20,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-    - uses: actions/checkout@v4
-    - uses: actions/setup-node@v6
+    - uses: actions/checkout@v7.0.1
+    - uses: actions/setup-node@v6.5.0
       with:
         node-version: 24
     - run: corepack enable
@@ -37,7 +37,7 @@ jobs:
         && yarn playwright install --with-deps chromium
         && yarn format:check && yarn test
 
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v7.0.0
       if: always()
       with:
         name: vortex-browser-results
@@ -71,7 +71,7 @@ jobs:
 
     - name: Publish PR preview
       if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
-      uses: Pendect/action-rsyncer@b7f90f4f8ed893d4e3f852f7a73180631f63d4bd # v2.0.0
+      uses: Pendect/action-rsyncer@v2.0.0
       env:
         DEPLOY_KEY: ${{ secrets.rsync_private_key }}
       with:
@@ -91,7 +91,7 @@ jobs:
     - name: Deploy to server
       if: github.event_name == 'workflow_dispatch'
       id: deploy
-      uses: Pendect/action-rsyncer@v1.1.0
+      uses: Pendect/action-rsyncer@v2.0.0
       env:
         DEPLOY_KEY: ${{secrets.rsync_private_key}}
       with:

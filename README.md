@@ -6,7 +6,7 @@ Discs Vortex
 
 ### 运行与验证
 
-需要 Node.js 24、Calcit 0.28.0 和 caps。使用 node-modules linker。
+需要 Node.js 24、Calcit 0.32.1 和 caps。使用 node-modules linker。
 
 ```sh
 yarn install --immutable
@@ -20,7 +20,7 @@ yarn format:check
 
 `calcit.cirru` 是源码，通过 Calcit CLI 修改。随机生成、HSL 转换、绝对时间采样、Scene 与 DPR 投影、Quamolit 绘制调用都由类型化 Calcit 实现；`main.mjs` 只负责浏览器生命周期、RAF、DOM 浮层和输入接线。编译输出放被忽略的 `target/js/app`，不需要手工拷贝或引入 Quamolit 内部 JS。
 
-固定已发布 Quamolit [`0.0.18-alpha.4`](https://github.com/Quamolit/quamolit/releases/tag/0.0.18-alpha.4)（已合并主线 `1fb5d0c`），传递依赖 js-ffi `0.2.1-alpha.11`；[Quamolit #218](https://github.com/Quamolit/quamolit/pull/218) 已合并，圆弧能力不再依赖候选 SHA。Alpha.3 不含此能力，不能降回旧 tag。当前使用 Canvas2D，未验证 WebGPU。
+固定 Quamolit 正式源码模块 [`0.0.18`](https://github.com/Quamolit/quamolit/releases/tag/0.0.18)，传递依赖 js-ffi `0.2.9`；[Quamolit #218](https://github.com/Quamolit/quamolit/pull/218) 已合并，圆弧能力不再依赖候选 SHA。早期预发布版本不含此能力，不能降回旧 tag。当前使用 Canvas2D，未验证 WebGPU。
 
 直接声明公共 Calcit `SceneContent :arc / ArcNode`，圆弧、圆头和方向由 Quamolit 引用 js-ffi 的原生 Canvas API 绘制，已删除应用角步长、点采样和三角离散绕过。半径/间隙/颜色/速度不简化；由 [Quamolit #212](https://github.com/Quamolit/quamolit/issues/212) 跟踪新 tag 的最后验收。不是旧随机画面的逐像素复制：随机源改为固定 seed，但原有生成分布、色彩范围与动画规则保留。
 
@@ -39,7 +39,7 @@ COS 只上传 `dist/`，使用正式 `cos-upload-action@v1.2.0` 的内置
 
 ### English
 
-A restored full-screen Calcit/Quamolit animation, not a compile-only bootstrap. Typed Calcit owns seeded generation and absolute-time Scene sampling; JavaScript only wires browser lifecycle and controls. Native `ArcNode` replaces application-side polyline tessellation. Run `yarn compile && yarn dev`; use `?seed=17&t=0.5` for deterministic frames. `yarn test` requires zero full-frame RGB differences against independent native Canvas arcs at DPR 1/2. Quamolit `0.0.18-alpha.4` is pinned and includes merged #218; no candidate SHA or manual host imports are needed. Alpha.3 does not include native arcs; WebGPU is not verified.
+A restored full-screen Calcit/Quamolit animation, not a compile-only bootstrap. Typed Calcit owns seeded generation and absolute-time Scene sampling; JavaScript only wires browser lifecycle and controls. Native `ArcNode` replaces application-side polyline tessellation. Run `yarn compile && yarn dev`; use `?seed=17&t=0.5` for deterministic frames. `yarn test` requires zero full-frame RGB differences against independent native Canvas arcs at DPR 1/2. Quamolit `0.0.18` is pinned and includes merged #218; no candidate SHA or manual host imports are needed. Early prerelease versions do not include native arcs; WebGPU is not verified.
 
 ### Workflow
 
