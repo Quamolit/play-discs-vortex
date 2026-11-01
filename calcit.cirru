@@ -12,25 +12,23 @@
       :defs $ {}
         'Chain $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstruct Chain (:seed 'Number)
-            :segments $ :: 'List 'app.main/Segment
+            :segments $ quote $ List app.main/Segment
           :examples $ []
-          :schema $ :: 'StructDef
+          :schema $ quote StructDef
         'Segment $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstruct Segment (:ring 'Number) (:from 'Number) (:to 'Number) (:color 'quamolit.motion/ColorRgba)
           :examples $ []
-          :schema $ :: 'StructDef
+          :schema $ quote StructDef
         'Vortex $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstruct Vortex (:seed 'Number) (:generation 'Number)
-            :segments $ :: 'List 'app.main/Segment
+            :segments $ quote $ List app.main/Segment
           :examples $ []
-          :schema $ :: 'StructDef
+          :schema $ quote StructDef
         'draw! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn draw! (context document width height dpr)
             renderer/draw-document! context (project-pixels document dpr) width height no-image
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Unit)
-            :args $ [] 'js-ffi.canvas-batches/CanvasContextHost 'quamolit.scene-ir/SceneDocument 'Number 'Number 'Number
-            :features $ #{} :js-ffi
+          :schema $ quote $ Fn js-ffi.canvas-batches/CanvasContextHost quamolit.scene-ir/SceneDocument Number Number Number (-> Unit) (:features :js-ffi)
         'gen-chain $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn gen-chain (chain base ring)
             let
@@ -57,8 +55,7 @@
                     + base step $ / 0.2 ring
                     , ring
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'app.main/Chain)
-            :args $ [] 'app.main/Chain 'Number 'Number
+          :schema $ quote $ Fn app.main/Chain Number Number (-> app.main/Chain)
         'generate $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn generate (seed generation end-ring)
             assert |invalid-vortex-seed $ and (motion/finite-number? seed) (> seed 0) (< seed 2147483647)
@@ -69,8 +66,7 @@
                   fn (current ring) (gen-chain current 0 ring)
               Vortex :seed seed :generation generation :segments $ :segments chain
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'app.main/Vortex)
-            :args $ [] 'Number 'Number 'Number
+          :schema $ quote $ Fn Number Number Number (-> app.main/Vortex)
         'hsl-channel $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn hsl-channel (h s l offset)
             let
@@ -86,33 +82,28 @@
                 factor $ if (< high 1) high 1
               - l $ * a factor
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Number)
-            :args $ [] 'Number 'Number 'Number 'Number
+          :schema $ quote $ Fn Number Number Number Number (-> Number)
         'initial $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn initial (seed) (generate seed 0 40)
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'app.main/Vortex)
-            :args $ [] 'Number
+          :schema $ quote $ Fn Number (-> app.main/Vortex)
         'main! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn main! ()
             assert |vortex-entry-empty $ >
-              count $ :nodes $ sample (initial 17) 0 1100 1000
+              .len $ :nodes $ sample (initial 17) 0 1100 1000
               , 0
             , &unit
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Unit)
-            :args $ []
+          :schema $ quote $ Fn (-> Unit)
         'next-seed $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn next-seed (seed)
             remainder (* 48271 seed) 2147483647
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Number)
-            :args $ [] 'Number
+          :schema $ quote $ Fn Number (-> Number)
         'no-image $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn no-image (id version) (raise |vortex-has-no-images)
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'js-ffi.browser/ImageHost)
-            :args $ [] 'String 'Number
+          :schema $ quote $ Fn String Number (-> js-ffi.browser/ImageHost)
         'project-pixels $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn project-pixels (document dpr)
             let
@@ -125,8 +116,7 @@
                     struct-with node $ :parent |vortex-root
               scene/SceneDocument :nodes $ concat ([] root) children
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'quamolit.scene-ir/SceneDocument)
-            :args $ [] 'quamolit.scene-ir/SceneDocument 'Number
+          :schema $ quote $ Fn quamolit.scene-ir/SceneDocument Number (-> quamolit.scene-ir/SceneDocument)
         'regenerate $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn regenerate (model)
             generate
@@ -134,19 +124,16 @@
               inc $ :generation model
               , 36
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'app.main/Vortex)
-            :args $ [] 'app.main/Vortex
+          :schema $ quote $ Fn app.main/Vortex (-> app.main/Vortex)
         'reload! $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn reload! () &unit
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Unit)
-            :args $ []
+          :schema $ quote $ Fn (-> Unit)
         'remainder $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn remainder (value divisor)
             - value $ * divisor $ floor (/ value divisor)
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'Number)
-            :args $ [] 'Number 'Number
+          :schema $ quote $ Fn Number Number (-> Number)
         'sample $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn sample (model seconds width height)
             assert |invalid-vortex-time $ and (motion/finite-number? seconds) (>= seconds 0)
@@ -154,14 +141,12 @@
             scene/SceneDocument :nodes $ map-indexed (:segments model)
               fn (index segment) (segment-node segment index seconds width height)
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'quamolit.scene-ir/SceneDocument)
-            :args $ [] 'app.main/Vortex 'Number 'Number 'Number
+          :schema $ quote $ Fn app.main/Vortex Number Number Number (-> quamolit.scene-ir/SceneDocument)
         'segment-color $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn segment-color (h s l)
             motion/ColorRgba :r (hsl-channel h s l 0) :g (hsl-channel h s l 8) :b (hsl-channel h s l 4) :a 1
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'quamolit.motion/ColorRgba)
-            :args $ [] 'Number 'Number 'Number
+          :schema $ quote $ Fn Number Number Number (-> quamolit.motion/ColorRgba)
         'segment-node $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defn segment-node (segment index seconds width height)
             let
@@ -184,8 +169,7 @@
                 * 12 $ :ring segment
                 , :start-angle start :end-angle end :counterclockwise false :width 4 :stroke (:color segment)
           :examples $ []
-          :schema $ :: 'Fn $ {} (:return 'quamolit.scene-ir/SceneNode)
-            :args $ [] 'app.main/Segment 'Number 'Number 'Number 'Number
+          :schema $ quote $ Fn app.main/Segment Number Number Number Number (-> quamolit.scene-ir/SceneNode)
       :ns $ %{} 'NsEntry (:doc |)
         :code $ quote $ ns app.main
           :require (quamolit.motion :as motion) (quamolit.scene-ir :as scene) (quamolit.canvas-scene :as renderer)
