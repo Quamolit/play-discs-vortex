@@ -11,16 +11,16 @@
     %{} 'FileEntry
       :defs $ {}
         'Chain $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defstruct Chain (:seed 'Number)
+          :code $ quote $ defstruct Chain (:seed Number)
             :segments $ quote $ List app.main/Segment
           :examples $ []
           :schema $ quote StructDef
         'Segment $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defstruct Segment (:ring 'Number) (:from 'Number) (:to 'Number) (:color 'quamolit.motion/ColorRgba)
+          :code $ quote $ defstruct Segment (:ring Number) (:from Number) (:to Number) (:color quamolit.motion/ColorRgba)
           :examples $ []
           :schema $ quote StructDef
         'Vortex $ %{} 'CodeEntry (:doc |)
-          :code $ quote $ defstruct Vortex (:seed 'Number) (:generation 'Number)
+          :code $ quote $ defstruct Vortex (:seed Number) (:generation Number)
             :segments $ quote $ List app.main/Segment
           :examples $ []
           :schema $ quote StructDef
