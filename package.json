@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "@calcit/procs": "0.34.3"
+    "@calcit/procs": "0.38.0"
   },
   "devDependencies": {
     "@playwright/test": "1.63.0",

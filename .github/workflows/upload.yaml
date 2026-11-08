@@ -25,7 +25,7 @@ jobs:
       with:
         node-version: 24
     - run: corepack enable
-    - uses: calcit-lang/setup-calcit@v1.5.0
+    - uses: calcit-lang/setup-calcit@v1.5.1
       with:
         tools: calcit,caps
         caps-version: "0.1.1"
@@ -59,7 +59,7 @@ jobs:
     - name: 上传前端资源并校验公开访问
       if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository)
       timeout-minutes: 10
-      uses: worktools/cos-upload-action@v1.2.0
+      uses: worktools/cos-upload-action@v1.3.0
       with:
         source-dir: dist
         bucket: ${{ secrets.COS_BUCKET }}

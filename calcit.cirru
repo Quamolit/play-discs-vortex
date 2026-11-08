@@ -12,7 +12,7 @@
       :defs $ {}
         'Chain $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstruct Chain (:seed Number)
-            :segments $ quote $ List app.main/Segment
+            :segments $ List app.main/Segment
           :examples $ []
           :schema $ quote StructDef
         'Segment $ %{} 'CodeEntry (:doc |)
@@ -21,7 +21,7 @@
           :schema $ quote StructDef
         'Vortex $ %{} 'CodeEntry (:doc |)
           :code $ quote $ defstruct Vortex (:seed Number) (:generation Number)
-            :segments $ quote $ List app.main/Segment
+            :segments $ List app.main/Segment
           :examples $ []
           :schema $ quote StructDef
         'draw! $ %{} 'CodeEntry (:doc |)
