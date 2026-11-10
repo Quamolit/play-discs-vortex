@@ -6,7 +6,7 @@ Discs Vortex
 
 ### 运行与验证
 
-需要 Node.js 24、Calcit 0.38.0 和 caps。使用 node-modules linker。
+需要 Node.js 24、Calcit 0.40.0 和 caps。使用 node-modules linker。
 
 ```sh
 yarn install --immutable
