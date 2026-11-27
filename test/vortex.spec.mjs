@@ -110,11 +110,17 @@ for (const dpr of [1, 2]) {
         window.vortex.seek(seconds);
         const canvas = document.querySelector("canvas");
         const model = window.vortex.inspect();
-        const reference = document.createElement("canvas");
-        reference.width = canvas.width;
-        reference.height = canvas.height;
+        const reference = (window.vortexReference ??=
+          document.createElement("canvas"));
+        if (
+          reference.width !== canvas.width ||
+          reference.height !== canvas.height
+        ) {
+          reference.width = canvas.width;
+          reference.height = canvas.height;
+        }
         const native = reference.getContext("2d");
-        native.scale(devicePixelRatio, devicePixelRatio);
+        native.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
         native.fillStyle = "black";
         native.fillRect(0, 0, innerWidth, innerHeight);
         native.lineWidth = 4;
